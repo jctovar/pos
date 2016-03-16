@@ -7,6 +7,13 @@ angular.module('starter.controllers', [])
         $scope.total = 0;
         $scope.listCanSwipe = true;
         $scope.shouldShowDelete = false;
+        $scope.data = {};
+        
+        
+        $scope.clearSearch = function() {
+            $scope.data = {};
+            console.log('Clear...');
+        };
         
         var query = product.get(function() {
             $scope.products = query.product;
@@ -25,6 +32,7 @@ angular.module('starter.controllers', [])
         }
 
         $scope.closeModal = function() {
+            $scope.data = {};
             $scope.modal.hide();
         }
 
@@ -34,7 +42,6 @@ angular.module('starter.controllers', [])
         
         // Perform the update action when the user submits the form
         $scope.doAdd = function(product_id) {
-            
             var item = product.get({ id: product_id }, function() {
                 var row = {};
                     row.product_id = item.product[0].product_id;
@@ -74,8 +81,6 @@ angular.module('starter.controllers', [])
         
         function updateTotals() {
             $scope.subtotal = total($scope.items);
-            $scope.iva = 0;
-            $scope.total = total($scope.items);
         }
 })
 

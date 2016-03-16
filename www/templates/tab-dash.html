@@ -11,7 +11,7 @@
                 {{item.product_name}}
                 <p>Cantidad: {{item.product_qty}} {{item.unit_name}} * {{item.product_price | currency}} </p>
                 <span class="item-note">
-                    [{{item.product_qty *item.product_price | currency}}]
+                    [{{item.product_qty * item.product_price | currency}}]
                 </span>
                 <ion-option-button class="button-calm" ng-click="openQty()">
                     Editar
@@ -23,10 +23,10 @@
             <div class="col col-33 col-offset-66">Subtotal<span class="item-note">{{subtotal | currency}}</span></div>
         </div>
         <div class="row">
-            <div class="col col-33 col-offset-66">Impuesto<span class="item-note">{{iva | currency}}</span></div>
+            <div class="col col-33 col-offset-66">Impuesto<span class="item-note">{{(subtotal * 0.16) | currency}}</span></div>
         </div>
         <div class="row">
-            <div class="col col-33 col-offset-66">Total<span class="item-note">{{total | currency}}</span></div>
+            <div class="col col-33 col-offset-66">Total<span class="item-note">{{subtotal * 1.16 | currency}}</span></div>
         </div>
   </ion-content>
 </ion-view>
