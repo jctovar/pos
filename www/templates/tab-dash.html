@@ -1,17 +1,32 @@
-<ion-view view-title="Dashboard">
+<ion-view view-title="Punto de venta">
   <ion-content class="padding">
-    <h2>Welcome to Ionic</h2>
-    <p>
-    This is the Ionic starter for tabs-based apps. For other starters and ready-made templates, check out the <a href="http://market.ionic.io/starters" target="_blank">Ionic Market</a>.
-    </p>
-    <p>
-      To edit the content of each tab, edit the corresponding template file in <code>www/templates/</code>. This template is <code>www/templates/tab-dash.html</code>
-    </p>
-    <p>
-    If you need help with your app, join the Ionic Community on the <a href="http://forum.ionicframework.com" target="_blank">Ionic Forum</a>. Make sure to <a href="http://twitter.com/ionicframework" target="_blank">follow us</a> on Twitter to get important updates and announcements for Ionic developers.
-    </p>
-    <p>
-      For help sending push notifications, join the <a href="https://apps.ionic.io/signup" target="_blank">Ionic Platform</a> and check out <a href="http://docs.ionic.io/docs/push-overview" target="_blank">Ionic Push</a>. We also have other services available.
-    </p>
+    <button class="button button-positive" ng-click="openModal()">Buscar producto</button>
+    <ion-toggle ng-model="shouldShowDelete">
+        Mostra boton de eliminar?
+    </ion-toggle>
+    
+        <ion-list show-delete="shouldShowDelete" can-swipe="listCanSwipe">
+            <ion-item class="item-avatar" ng-repeat="item in items" ng-click="openQty($index)">
+                <ion-delete-button class="ion-minus-circled" ng-click="deleteItem($index)"></ion-delete-button>
+                {{item.product_name}}
+                <p>Cantidad: {{item.product_qty}} {{item.unit_name}} * {{item.product_price | currency}} </p>
+                <span class="item-note">
+                    [{{item.product_qty *item.product_price | currency}}]
+                </span>
+                <ion-option-button class="button-calm" ng-click="openQty()">
+                    Editar
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
+    
+        <div class="row">
+            <div class="col col-33 col-offset-66">Subtotal<span class="item-note">{{subtotal | currency}}</span></div>
+        </div>
+        <div class="row">
+            <div class="col col-33 col-offset-66">Impuesto<span class="item-note">{{iva | currency}}</span></div>
+        </div>
+        <div class="row">
+            <div class="col col-33 col-offset-66">Total<span class="item-note">{{total | currency}}</span></div>
+        </div>
   </ion-content>
 </ion-view>

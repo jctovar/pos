@@ -1,6 +1,93 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+.controller('DashCtrl', function($scope, product, $ionicModal, total, $ionicPopup) {
+        $scope.items = [];
+        $scope.subtotal = 0;
+        $scope.iva = 0;
+        $scope.total = 0;
+        $scope.listCanSwipe = true;
+        $scope.shouldShowDelete = false;
+        
+        var query = product.get(function() {
+            $scope.products = query.product;
+        });
+    
+        $ionicModal.fromTemplateUrl('templates/product_search.html', {
+            scope: $scope,
+            animation: 'slide-in-up',
+            focusFirstInput: true
+        }).then(function(modal) {
+            $scope.modal = modal
+        })
+
+        $scope.openModal = function() {
+            $scope.modal.show()
+        }
+
+        $scope.closeModal = function() {
+            $scope.modal.hide();
+        }
+
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        })
+        
+        // Perform the update action when the user submits the form
+        $scope.doAdd = function(product_id) {
+            
+            var item = product.get({ id: product_id }, function() {
+                var row = {};
+                    row.product_id = item.product[0].product_id;
+                    row.product_name = item.product[0].product_name;
+                    row.product_price = item.product[0].product_price_1;
+                    row.unit_name = item.product[0].unit_name;
+                    row.product_qty = '1';
+                $scope.items.push(row);
+                $scope.subtotal = total($scope.items);
+                $scope.iva = 0;
+                $scope.total = total($scope.items);
+                console.log('add; ' + JSON.stringify($scope.items));
+            });
+ 
+            $scope.closeModal();
+        }
+        
+        $scope.openQty = function(index) {
+            //alert(product_id);
+            
+            var qty = $scope.items[index].product_qty;
+            console.log('index; ' + qty);
+            var myPopup = $ionicPopup.show({
+                template: '<input type="number" ng-model="data.wifi" value="3">',
+                title: 'Ingresa la nueva cantidad',
+                scope: $scope,
+                buttons: [
+                { text: 'Cancelar' },
+                {
+                    text: 'Guardar',
+                    type: 'button-positive',
+                    onTap: function(e) {
+                    if (!$scope.data.wifi) {
+                        //don't allow the user to close unless he enters wifi password
+                        e.preventDefault();
+                    } else {
+                        return $scope.data.wifi;
+                    }
+                    }
+                }
+                ]
+            });
+           
+        }
+        
+        
+        
+        $scope.deleteItem = function(item) {
+            $scope.items.splice(item,1);
+            $scope.subtotal = total($scope.items);
+            $scope.total = total($scope.items);
+        };
+})
 
 .controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
