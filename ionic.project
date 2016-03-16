@@ -1,6 +1,6 @@
 {
   "name": "pos",
-  "app_id": "",
+  "app_id": "f4babe61",
   "gulpStartupTasks": [
     "sass",
     "watch"

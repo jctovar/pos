@@ -43,9 +43,7 @@ angular.module('starter.controllers', [])
                     row.unit_name = item.product[0].unit_name;
                     row.product_qty = '1';
                 $scope.items.push(row);
-                $scope.subtotal = total($scope.items);
-                $scope.iva = 0;
-                $scope.total = total($scope.items);
+                updateTotals();
                 console.log('add; ' + JSON.stringify($scope.items));
             });
  
@@ -53,40 +51,32 @@ angular.module('starter.controllers', [])
         }
         
         $scope.openQty = function(index) {
-            //alert(product_id);
+            var qty = Number($scope.items[index].product_qty);
             
-            var qty = $scope.items[index].product_qty;
-            console.log('index; ' + qty);
-            var myPopup = $ionicPopup.show({
-                template: '<input type="number" ng-model="data.wifi" value="John">',
-                title: 'Ingresa la nueva cantidad',
+            $scope.quantity = { value: qty }
+            var promptPopup = $ionicPopup.prompt({
+                title: 'Modificar cantidad',
+                templateUrl : 'popup-template.html',
                 scope: $scope,
-                buttons: [
-                { text: 'Cancelar' },
-                {
-                    text: 'Guardar',
-                    type: 'button-positive',
-                    onTap: function(e) {
-                    if (!$scope.data.wifi) {
-                        //don't allow the user to close unless he enters wifi password
-                        e.preventDefault();
-                    } else {
-                        return $scope.data.wifi;
-                    }
-                    }
-                }
-                ]
+                inputPlaceholder: 'Cantidad numerica'
             });
-           
+            
+            promptPopup.then(function(res) {
+                $scope.items[index].product_qty = $scope.quantity.value;
+                updateTotals();
+            });   
         }
-        
-        
         
         $scope.deleteItem = function(item) {
             $scope.items.splice(item,1);
-            $scope.subtotal = total($scope.items);
-            $scope.total = total($scope.items);
+            updateTotals();
         };
+        
+        function updateTotals() {
+            $scope.subtotal = total($scope.items);
+            $scope.iva = 0;
+            $scope.total = total($scope.items);
+        }
 })
 
 .controller('ChatsCtrl', function($scope, Chats) {
