@@ -58,7 +58,7 @@ angular.module('starter.controllers', [])
             var qty = $scope.items[index].product_qty;
             console.log('index; ' + qty);
             var myPopup = $ionicPopup.show({
-                template: '<input type="number" ng-model="data.wifi" value="3">',
+                template: '<input type="number" ng-model="data.wifi" value="John">',
                 title: 'Ingresa la nueva cantidad',
                 scope: $scope,
                 buttons: [
